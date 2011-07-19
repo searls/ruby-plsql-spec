@@ -61,6 +61,7 @@ EOS
         end
         ENV['PLSQL_DBMS_OUTPUT'] = 'true' if options[:"dbms-output"]
         ENV['PLSQL_HTML'] = options[:html] if options[:html]
+        ENV['PLSQL_RSPEC_PARAMS'] = options[:"rspec-params"] if options[:"rspec-params"]
         ENV['PLSQL_COVERAGE'] = options[:coverage] if options[:coverage]
         ENV['PLSQL_COVERAGE_IGNORE_SCHEMAS'] = options[:"ignore-schemas"].join(',') if options[:"ignore-schemas"]
         ENV['PLSQL_COVERAGE_LIKE'] = options[:like].join(',') if options[:like]
@@ -72,6 +73,10 @@ EOS
           speccommand = "rspec --format html --out #{spec_output_filename}"
         else
           speccommand = "rspec"
+        end
+
+        if options[:"rspec-params"]
+          speccommand = "#{speccommand} #{options[:"rspec-params"]} "
         end
 
         if files.empty?
